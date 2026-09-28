@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071a2b">
+  <meta name="description" content="SAMA ÉCOLE VIRTUELLE — recrutement d'enseignants en ligne">
+  <title>SAMA ÉCOLE VIRTUELLE</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;--surface:#fff;--surface2:#eef5fa;--ink:#102034;--muted:#607084;
+      --line:#dae4ee;--navy:#071a2b;--brand:#0879be;--cyan:#13a6d7;
+      --ok:#0b7c50;--okbg:#e8f7f0;--warn:#986300;--warnbg:#fff5df;--bad:#b42318;--badbg:#ffebe8;
+      --shadow:0 18px 55px rgba(7,26,43,.10);--r:21px;--rs:13px
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#fbfdff,#f2f6fb);color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+    button,input,select,textarea{font:inherit}
+    button,a{cursor:pointer}
+    a{text-decoration:none}
+    .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:11px clamp(13px,3vw,38px);background:rgba(255,255,255,.93);backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;color:var(--ink)}
+    .brand img{width:47px;height:47px;border-radius:14px;object-fit:cover;border:1px solid var(--line);background:#fff}
+    .brand-title{font-weight:950;font-size:1rem;white-space:nowrap}
+    .brand-sub{font-size:.76rem;color:var(--muted);margin-top:2px}
+    .top-actions{display:flex;gap:9px;align-items:center}
+    .btn{border:0;border-radius:13px;padding:11px 14px;font-weight:850;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      transition:transform .15s,box-shadow .15s,background .15s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .primary{background:var(--navy);color:#fff;box-shadow:0 9px 24px rgba(7,26,43,.14)}
+    .secondary{background:#eaf3fa;color:#0b5b82}
+    .ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
+    .success{background:var(--ok);color:#fff}.danger{background:#fff;color:var(--bad);border:1px solid #efc0ba}
+    .small{font-size:.82rem;padding:8px 10px;border-radius:10px}
+    .page{max-width:1190px;margin:auto;padding:28px clamp(14px,3vw,38px) 54px}
+    .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;margin-top:10px}
+    .hero-card{min-height:410px;border-radius:29px;padding:clamp(26px,4vw,55px);color:#fff;position:relative;overflow:hidden;
+      background:linear-gradient(145deg,#071a2b 0%,#0c547e 65%,#10a5d6 140%);box-shadow:var(--shadow)}
+    .hero-card:after{content:"";position:absolute;width:330px;height:330px;border-radius:50%;right:-150px;top:-150px;background:rgba(255,255,255,.07)}
+    .eyebrow{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .hero .eyebrow{background:rgba(255,255,255,.13)}
+    .hero h1{font-size:clamp(2.15rem,5vw,4rem);line-height:1.02;margin:21px 0 14px;max-width:760px;letter-spacing:-.03em}
+    .hero p{font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.68;color:rgba(255,255,255,.88);max-width:720px;margin:0}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+    .hero .primary{background:#fff;color:var(--navy)}.hero .secondary{color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+    .side{display:flex;flex-direction:column;gap:13px}
+    .info{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;box-shadow:0 8px 25px rgba(7,26,43,.05)}
+    .check{display:flex;gap:10px;align-items:flex-start}.icon{width:34px;height:34px;border-radius:10px;background:var(--okbg);color:var(--ok);display:grid;place-items:center;font-weight:950;flex:0 0 auto}
+    .info h3{font-size:.98rem;margin:0 0 6px}.info p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.55}
+    .section-title{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:41px 0 15px}
+    .section-title h2{margin:0;font-size:clamp(1.35rem,2.6vw,2rem)}.section-title p{margin:6px 0 0;color:var(--muted);font-size:.88rem}
+    .openings{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .opening{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 8px 24px rgba(7,26,43,.05)}
+    .opening .subject{font-weight:950}.opening .grade{margin-top:6px;color:var(--brand);font-weight:850;font-size:.88rem}.opening .req{margin-top:9px;color:var(--muted);font-size:.82rem;line-height:1.5}
+    .empty{border:1px dashed #becbd8;border-radius:17px;padding:28px;text-align:center;color:var(--muted);background:rgba(255,255,255,.55)}
+    .form-card{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:23px;padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:7px}.full{grid-column:1/-1}
+    label{font-weight:850;font-size:.88rem}
+    input,select,textarea{width:100%;background:#fbfdff;color:var(--ink);border:1px solid #cbd8e5;border-radius:12px;padding:12px 13px;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:#76b5d4;box-shadow:0 0 0 4px rgba(8,121,190,.10)}
+    textarea{min-height:118px;resize:vertical}.hint{font-size:.74rem;color:var(--muted);line-height:1.45}
+    .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checkbox{display:flex;gap:9px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fbfdff}
+    .checkbox input{width:18px;height:18px;accent-color:var(--brand);margin-top:1px}.checkbox span{font-size:.81rem;line-height:1.43}
+    .form-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:17px}.consent{font-size:.73rem;color:var(--muted);line-height:1.5;max-width:670px}
+    .banner{display:none;margin-top:16px;padding:13px 14px;border-radius:13px;font-size:.84rem;line-height:1.5}.banner.show{display:block}.banner.ok{background:var(--okbg);color:#17623f;border:1px solid #b7e1cd}.banner.bad{background:var(--badbg);color:#7d2018;border:1px solid #f0c0ba}.banner.info{background:#eaf4fb;color:#0a557c;border:1px solid #bfdeed}
+    .footer{max-width:1190px;margin:auto;padding:12px 14px 42px;text-align:center;color:var(--muted);font-size:.76rem}
+
+    /* admin */
+    #adminShell{display:none}.admin-hero{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;padding:18px 0 5px}
+    .admin-hero h1{margin:8px 0 0;font-size:clamp(1.8rem,4vw,2.75rem)}.admin-hero p{margin:7px 0 0;color:var(--muted)}
+    .admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:16px}.stat .n{font-weight:950;font-size:1.7rem}.stat .l{font-size:.74rem;color:var(--muted);margin-top:4px;font-weight:700}
+    .admin-grid{display:grid;grid-template-columns:1.55fr .9fr;gap:17px;margin-top:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:21px;padding:17px;box-shadow:0 8px 25px rgba(7,26,43,.05)}
+    .panel-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:13px}.panel-head h2{margin:0;font-size:1.05rem}.panel-head p{margin:5px 0 0;color:var(--muted);font-size:.8rem}
+    .filters{display:grid;grid-template-columns:1.25fr .75fr .75fr auto;gap:8px;margin-bottom:12px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:11px;border-bottom:1px solid var(--line);font-size:.78rem;text-align:left;vertical-align:top}
+    th{background:#f7fafc;color:#526174;text-transform:uppercase;font-size:.7rem;letter-spacing:.04em}.candidate{font-weight:900}.sub{color:var(--muted);margin-top:4px}
+    .pill{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:.7rem;font-weight:900}.pending{background:var(--warnbg);color:var(--warn)}.accepted{background:var(--okbg);color:var(--ok)}.rejected{background:var(--badbg);color:var(--bad)}
+    .row-actions{display:flex;flex-wrap:wrap;gap:5px}.wa{color:#0b7c50;font-weight:850}
+    .opening-admin{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fbfdff}.opening-admin+.opening-admin{margin-top:9px}
+    .opening-admin .top{display:flex;justify-content:space-between;gap:9px;align-items:flex-start}.opening-admin .name{font-weight:900}.opening-admin .meta{color:var(--muted);font-size:.74rem;margin-top:3px}.opening-admin .req{color:#506077;font-size:.77rem;line-height:1.45;margin-top:7px}
+    .notification-box{margin-bottom:12px;padding:12px;border:1px solid #bfdeed;background:#eaf4fb;color:#0a557c;border-radius:13px;font-size:.78rem;line-height:1.5}
+    .unread{font-weight:950}
+    .toast{position:fixed;right:16px;bottom:16px;z-index:300;max-width:380px;padding:12px 14px;border-radius:13px;background:#0b1d2f;color:#fff;box-shadow:0 17px 44px rgba(0,0,0,.23);opacity:0;transform:translateY(10px);pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translateY(0)}
+    .backdrop{position:fixed;inset:0;z-index:200;background:rgba(4,14,24,.65);backdrop-filter:blur(8px);display:grid;place-items:center;padding:17px}
+    .modal{width:min(520px,100%);background:#fff;border-radius:21px;border:1px solid var(--line);box-shadow:0 30px 90px rgba(0,0,0,.28);padding:21px}.modal h3{margin:0;font-size:1.15rem}.modal p{color:var(--muted);font-size:.82rem;line-height:1.5}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:16px}.hidden{display:none!important}
+    .spinner{width:17px;height:17px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;display:inline-block;animation:spin .75s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:920px){.hero,.admin-grid{grid-template-columns:1fr}.openings{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
+    @media(max-width:680px){.brand-sub{display:none}.brand img{width:42px;height:42px}.topbar{padding:9px 11px}.top-actions .label{display:none}.hero-card{min-height:auto;border-radius:24px;padding:25px}.openings,.form-grid,.checks{grid-template-columns:1fr}.filters{grid-template-columns:1fr 1fr}.filters .wide{grid-column:1/-1}.form-footer .btn{width:100%}.section-title{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#accueil">
+    <img src="https://cdn.phototourl.com/member/2026-09-27-835d30ec-d93a-41ca-8f26-72eacc6b8d81.jpg" alt="Logo SAMA ÉCOLE VIRTUELLE">
+    <div><div class="brand-title">SAMA ÉCOLE VIRTUELLE</div><div class="brand-sub">Cours en ligne • recrutement des enseignants</div></div>
+  </a>
+  <div class="top-actions">
+    <button class="btn ghost" id="homeBtn">Accueil</button>
+    <button class="btn primary" id="adminBtn">🔐 <span class="label">Espace administrateur</span></button>
+  </div>
+</header>
+
+<main id="publicShell">
+  <div class="page">
+    <section class="hero" id="accueil">
+      <div class="hero-card">
+        <span class="eyebrow">SAMA ÉCOLE VIRTUELLE</span>
+        <h1>Des enseignants sérieux, rigoureux et prêts pour l’enseignement en ligne.</h1>
+        <p>Nous recherchons des professeurs disposant d’un ordinateur fonctionnel, d’une très bonne connexion Wi‑Fi et d’une réelle capacité à assurer des cours en ligne avec sérieux.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#candidature">📝 Déposer une candidature</a>
+          <button class="btn secondary" id="refreshPublic">↻ Actualiser</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="info"><div class="check"><div class="icon">✓</div><div><h3>Ordinateur obligatoire</h3><p>Un ordinateur fonctionnel est requis pour préparer et assurer les cours en ligne.</p></div></div></div>
+        <div class="info"><div class="check"><div class="icon">✓</div><div><h3>Très bonne connexion Wi‑Fi</h3><p>La stabilité de la connexion doit permettre des cours en direct sans interruptions fréquentes.</p></div></div></div>
+        <div class="info"><div class="check"><div class="icon">✓</div><div><h3>WhatsApp obligatoire</h3><p>Le candidat doit fournir un numéro WhatsApp valide pour être contacté par le recrutement.</p></div></div></div>
+      </div>
+    </section>
+
+    <div class="section-title">
+      <div><h2>Recrutements actuellement ouverts</h2><p>Les matières et classes sont choisies par l’administrateur.</p></div>
+      <div id="publicSync" class="hint">Chargement…</div>
+    </div>
+    <section id="openings" class="openings"></section>
+
+    <section id="candidature" class="form-card">
+      <div class="section-title" style="margin:0 0 17px">
+        <div><h2>Formulaire de candidature</h2><p>Toutes les informations demandées sont nécessaires à l’étude du dossier.</p></div>
+      </div>
+
+      <!-- Netlify détecte ce formulaire au déploiement pour permettre les notifications e-mail. -->
+      <form id="applicationForm" name="candidature-netlify" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="candidature-netlify">
+        <p class="hidden"><label>Ne pas remplir : <input name="bot-field"></label></p>
+        <div class="form-grid">
+          <div class="field"><label for="name">Nom et prénom *</label><input id="name" name="name" required maxlength="120" autocomplete="name" placeholder="Ex. Mamadou Diop"></div>
+          <div class="field"><label for="whatsapp">Numéro WhatsApp *</label><input id="whatsapp" name="whatsapp" required maxlength="30" inputmode="tel" autocomplete="tel" placeholder="+221 77 123 45 67"><div class="hint">Format international recommandé.</div></div>
+          <div class="field"><label for="subject">Matière *</label><select id="subject" name="subject" required><option value="">Choisissez une matière</option></select></div>
+          <div class="field"><label for="grade">Classe concernée *</label><select id="grade" name="grade" required disabled><option value="">Choisissez d’abord la matière</option></select></div>
+          <div class="field full">
+            <label>Équipement *</label>
+            <div class="checks">
+              <label class="checkbox"><input type="checkbox" id="computer" name="computer" value="Oui" required><span><strong>Je possède un ordinateur fonctionnel.</strong><br>Je pourrai préparer et assurer mes cours en ligne depuis cet ordinateur.</span></label>
+              <label class="checkbox"><input type="checkbox" id="wifi" name="wifi" value="Oui" required><span><strong>Je possède une très bonne connexion Wi‑Fi.</strong><br>Ma connexion est suffisamment stable pour les cours en direct.</span></label>
+            </div>
+          </div>
+          <div class="field full"><label for="bio">Présentation / expérience / motivation *</label><textarea id="bio" name="bio" required maxlength="1800" placeholder="Formation, expérience d’enseignement, classes maîtrisées, motivation, disponibilité…"></textarea></div>
+        </div>
+        <div class="form-footer">
+          <div class="consent">En envoyant votre candidature, vous confirmez que les informations sont exactes et acceptez leur utilisation pour le recrutement des enseignants de SAMA ÉCOLE VIRTUELLE.</div>
+          <button class="btn primary" id="submitApplication" type="submit">Envoyer ma candidature</button>
+        </div>
+        <div id="applicationStatus" class="banner" role="status"></div>
+      </form>
+    </section>
+  </div>
+  <footer class="footer">© <span id="year"></span> SAMA ÉCOLE VIRTUELLE — Plateforme de recrutement.</footer>
+</main>
+
+<main id="adminShell">
+  <div class="page">
+    <section class="admin-hero">
+      <div><span class="eyebrow" style="background:#eaf3fa;color:#0b587f">ADMIN</span><h1>Tableau de bord recrutement</h1><p>Une seule base de données persistante, partagée entre tous vos téléphones et appareils.</p></div>
+      <div class="admin-actions"><button class="btn secondary" id="notificationBtn">🔔 Notifications</button><button class="btn ghost" id="adminRefresh">↻ Actualiser</button><button class="btn primary" id="logoutBtn">Quitter l’admin</button></div>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><div class="n" id="statTotal">0</div><div class="l">Candidatures</div></div>
+      <div class="stat"><div class="n" id="statPending">0</div><div class="l">En attente</div></div>
+      <div class="stat"><div class="n" id="statAccepted">0</div><div class="l">Acceptées</div></div>
+      <div class="stat"><div class="n" id="statOpenings">0</div><div class="l">Recrutements ouverts</div></div>
+    </section>
+
+    <div id="adminNotificationBox" class="notification-box hidden" style="margin-top:16px"></div>
+
+    <div class="admin-grid">
+      <section class="panel">
+        <div class="panel-head"><div><h2>Candidatures</h2><p>Acceptez, refusez, consultez ou supprimez les dossiers.</p></div><div id="adminSync" class="hint">Chargement…</div></div>
+        <div class="filters">
+          <input id="search" class="wide" placeholder="Nom, WhatsApp, matière, classe…">
+          <select id="statusFilter"><option value="">Tous les statuts</option><option>En attente</option><option>Accepté</option><option>Refusé</option></select>
+          <select id="subjectFilter"><option value="">Toutes les matières</option></select>
+          <button class="btn ghost small" id="resetFilters">Réinitialiser</button>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Candidat</th><th>Matière / classe</th><th>Équipement</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="candidateRows"><tr><td colspan="6" style="text-align:center;color:#607084">Chargement…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><div><h2>Besoins de recrutement</h2><p>Vous choisissez les matières et classes recherchées.</p></div></div>
+        <form id="openingForm">
+          <input type="hidden" id="openingId">
+          <div class="field"><label for="openingSubject">Matière *</label><input id="openingSubject" required maxlength="120" placeholder="Mathématiques"></div>
+          <div class="field" style="margin-top:10px"><label for="openingGrade">Classe *</label><input id="openingGrade" required maxlength="100" placeholder="Terminal S"></div>
+          <div class="field" style="margin-top:10px"><label for="openingRequirement">Profil / exigence</label><textarea id="openingRequirement" maxlength="700" style="min-height:95px" placeholder="Ex. Expérience au lycée, rigueur, disponibilité…"></textarea></div>
+          <div class="modal-actions" style="justify-content:flex-start"><button class="btn primary" type="submit" id="saveOpening">Ajouter le besoin</button><button class="btn ghost hidden" type="button" id="cancelOpening">Annuler</button></div>
+        </form>
+        <div style="height:1px;background:var(--line);margin:17px 0"></div>
+        <div id="openingList"><div class="empty">Chargement…</div></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<div id="loginBackdrop" class="backdrop hidden">
+  <div class="modal">
+    <h3>Accès administrateur</h3>
+    <p>Le mot de passe est vérifié côté serveur. Accès : <strong>mot de passe administrateur</strong>.</p>
+    <form id="loginForm">
+      <div class="field"><label for="adminPassword">Mot de passe</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Mot de passe"><div id="loginError" class="hint" style="color:var(--bad);min-height:18px"></div></div>
+      <div class="modal-actions"><button type="button" class="btn ghost" id="closeLogin">Annuler</button><button class="btn primary" type="submit">Ouvrir l’espace admin</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="candidateBackdrop" class="backdrop hidden">
+  <div class="modal" style="width:min(690px,100%)">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><h3 id="candidateTitle">Candidat</h3><p id="candidateMeta" style="margin-bottom:0"></p></div><button class="btn ghost small" id="closeCandidate">Fermer</button></div>
+    <div id="candidateDetail" style="margin-top:15px"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const API = "/.netlify/functions/api";
+  const state = { openings:[], candidates:[], notifications:[], loggedIn:false, firstAdminLoad:true, lastIds:new Set(), timer:null };
+
+  const $ = (s,root=document)=>root.querySelector(s);
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const norm = v => String(v??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+  const fmtDate = v => {
+    if (!v) return "—";
+    const d = new Date(String(v).replace(" ","T"));
+    return Number.isNaN(d.getTime()) ? esc(v) : new Intl.DateTimeFormat("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d);
+  };
+  const id = prefix => `${prefix}-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,8).toUpperCase()}`;
+  const wa = v => `https://wa.me/${String(v||"").replace(/\D/g,"")}`;
+
+  async function api(method, action, body) {
+    const opts = {method, headers:{"Content-Type":"application/json"}, credentials:"same-origin"};
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    const res = await fetch(`${API}?action=${encodeURIComponent(action)}`, opts);
+    let data = {};
+    try { data = await res.json(); } catch {}
+    if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
+    return data;
+  }
+
+  function toast(msg){
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove("show"),4000);
+  }
+  function banner(el,type,msg){ el.className=`banner show ${type}`; el.textContent=msg; }
+  function clearBanner(el){ el.className="banner"; el.textContent=""; }
+
+  async function loadPublic(){
+    $("#publicSync").textContent="Synchronisation…";
+    try{
+      const data = await api("GET","public");
+      state.openings = data.openings || [];
+      renderOpenings();
+      $("#publicSync").textContent = `Mis à jour à ${new Intl.DateTimeFormat("fr-FR",{hour:"2-digit",minute:"2-digit"}).format(new Date())}`;
+    }catch(e){
+      $("#publicSync").textContent="Erreur de synchronisation";
+      $("#openings").innerHTML=`<div class="empty" style="grid-column:1/-1"><strong>Impossible de charger les recrutements.</strong><br>${esc(e.message)}<br><br><button class="btn secondary small" id="retry">Réessayer</button></div>`;
+      $("#retry").onclick=loadPublic;
+    }
+  }
+
+  function renderOpenings(){
+    const root=$("#openings"), rows=state.openings.filter(o=>o.subject&&o.grade);
+    if(!rows.length){
+      root.innerHTML=`<div class="empty" style="grid-column:1/-1">Aucun recrutement n’est actuellement ouvert. Les nouvelles matières et classes seront publiées par l’administrateur.</div>`;
+      fillSubjects([]); return;
+    }
+    root.innerHTML=rows.map(o=>`<article class="opening"><div class="subject">${esc(o.subject)}</div><div class="grade">Classe : ${esc(o.grade)}</div><div class="req">${esc(o.requirement||"Profil sérieux, rigoureux et disponible pour les cours en ligne.")}</div></article>`).join("");
+    fillSubjects(rows);
+  }
+
+  function fillSubjects(rows){
+    const sel=$("#subject"), old=sel.value;
+    const subjects=[...new Set(rows.map(o=>String(o.subject).trim()))].sort((a,b)=>a.localeCompare(b,"fr"));
+    sel.innerHTML=`<option value="">Choisissez une matière</option>`+subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("");
+    if(subjects.includes(old)) sel.value=old;
+    updateGrades();
+  }
+
+  function updateGrades(){
+    const subject=$("#subject").value, sel=$("#grade");
+    const grades=[...new Set(state.openings.filter(o=>String(o.subject).trim()===subject).map(o=>String(o.grade).trim()).filter(Boolean))];
+    sel.disabled=!subject;
+    sel.innerHTML=subject ? `<option value="">Choisissez une classe</option>`+grades.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join("") : `<option value="">Choisissez d’abord la matière</option>`;
+  }
+
+  async function submitCandidate(ev){
+    ev.preventDefault();
+    const form=$("#applicationForm"), btn=$("#submitApplication"), out=$("#applicationStatus");
+    clearBanner(out);
+    if(!form.reportValidity()) return;
+    if(!$("#computer").checked || !$("#wifi").checked){
+      banner(out,"bad","Vous devez confirmer que vous possédez un ordinateur fonctionnel et une très bonne connexion Wi‑Fi.");
+      return;
+    }
+    const payload={
+      id:id("CAND"),
+      name:$("#name").value.trim(),
+      whatsapp:$("#whatsapp").value.trim(),
+      subject:$("#subject").value.trim(),
+      grade:$("#grade").value.trim(),
+      computer:true,wifi:true,
+      bio:$("#bio").value.trim(),
+      date:new Date().toISOString()
+    };
+    if(!state.openings.some(o=>String(o.subject).trim()===payload.subject && String(o.grade).trim()===payload.grade)){
+      banner(out,"bad","Ce recrutement vient de changer. Actualisez la page puis choisissez une matière et une classe encore ouvertes.");
+      await loadPublic(); return;
+    }
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Envoi…';
+    try{
+      await api("POST","candidate",payload);
+      // Deuxième canal facultatif : Netlify Forms, utile pour recevoir un e-mail.
+      submitNetlifyForm(payload).catch(()=>{});
+      form.reset(); $("#grade").disabled=true; $("#grade").innerHTML='<option value="">Choisissez d’abord la matière</option>';
+      banner(out,"ok","Candidature envoyée avec succès. Votre dossier est maintenant en attente d’étude.");
+      toast("Candidature enregistrée.");
+    }catch(e){
+      banner(out,"bad",`Échec de l’envoi : ${e.message}`);
+    }finally{
+      btn.disabled=false; btn.textContent="Envoyer ma candidature";
+    }
+  }
+
+  async function submitNetlifyForm(p){
+    const data = new URLSearchParams();
+    data.set("form-name","candidature-netlify");
+    data.set("name",p.name); data.set("whatsapp",p.whatsapp); data.set("subject",p.subject); data.set("grade",p.grade);
+    data.set("computer","Oui"); data.set("wifi","Oui"); data.set("bio",p.bio);
+    await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:data.toString()});
+  }
+
+  function showLogin(){
+    $("#loginBackdrop").classList.remove("hidden"); $("#adminPassword").value=""; $("#loginError").textContent="";
+    setTimeout(()=>$("#adminPassword").focus(),40);
+  }
+  function closeLogin(){ $("#loginBackdrop").classList.add("hidden"); }
+
+  async function login(ev){
+    ev.preventDefault();
+    const pass=$("#adminPassword").value, err=$("#loginError");
+    err.textContent="Connexion…";
+    try{
+      await api("POST","login",{password:pass});
+      state.loggedIn=true; closeLogin(); $("#publicShell").style.display="none"; $("#adminShell").style.display="block"; location.hash="admin";
+      await loadAdmin();
+    }catch(e){ err.textContent="Mot de passe incorrect ou accès refusé."; }
+  }
+
+  async function logout(){
+    try{await api("POST","logout",{});}catch{}
+    state.loggedIn=false; $("#adminShell").style.display="none"; $("#publicShell").style.display="block"; history.replaceState({}, "", "#accueil");
+    stopPolling();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  async function loadAdmin(){
+    if(!state.loggedIn) return;
+    $("#adminSync").textContent="Synchronisation…";
+    try{
+      const data=await api("GET","admin-data");
+      const incoming=new Set((data.candidates||[]).map(x=>String(x.id)));
+      if(!state.firstAdminLoad){
+        const added=(data.candidates||[]).filter(x=>incoming.size && !state.lastIds.has(String(x.id)) && (x.status||"En attente")==="En attente");
+        if(added.length){ toast(`🔔 ${added.length} nouvelle(s) candidature(s).`); notifyBrowser(added.length); }
+      }
+      state.lastIds=incoming; state.firstAdminLoad=false;
+      state.candidates=data.candidates||[]; state.openings=data.openings||[]; state.notifications=data.notifications||[];
+      renderAdmin(); updateNotificationBox();
+      $("#adminSync").textContent=`Synchronisé à ${new Intl.DateTimeFormat("fr-FR",{hour:"2-digit",minute:"2-digit"}).format(new Date())}`;
+    }catch(e){
+      if(/non autorisé|unauthorized|401/i.test(e.message)){ state.loggedIn=false; $("#adminShell").style.display="none"; $("#publicShell").style.display="block"; showLogin(); return; }
+      $("#adminSync").textContent="Erreur de synchronisation"; toast(e.message);
+    }
+  }
+
+  function renderAdmin(){
+    const total=state.candidates.length, pending=state.candidates.filter(x=>(x.status||"En attente")==="En attente").length, accepted=state.candidates.filter(x=>x.status==="Accepté").length;
+    $("#statTotal").textContent=total; $("#statPending").textContent=pending; $("#statAccepted").textContent=accepted; $("#statOpenings").textContent=state.openings.length;
+    fillSubjectFilter(); renderCandidates(); renderOpeningList();
+  }
+
+  function fillSubjectFilter(){
+    const sel=$("#subjectFilter"), old=sel.value, subjects=[...new Set(state.candidates.map(x=>String(x.subject||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"fr"));
+    sel.innerHTML=`<option value="">Toutes les matières</option>`+subjects.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join(""); if(subjects.includes(old)) sel.value=old;
+  }
+
+  function renderCandidates(){
+    const q=norm($("#search").value), status=$("#statusFilter").value, subject=$("#subjectFilter").value;
+    const rows=state.candidates.filter(c=>{
+      if(status && String(c.status||"En attente")!==status) return false;
+      if(subject && String(c.subject||"")!==subject) return false;
+      if(!q) return true;
+      return norm([c.name,c.whatsapp,c.subject,c.grade,c.bio].join(" ")).includes(q);
+    });
+    const body=$("#candidateRows");
+    if(!rows.length){ body.innerHTML='<tr><td colspan="6"><div class="empty">Aucune candidature ne correspond aux filtres.</div></td></tr>'; return; }
+    body.innerHTML=rows.map(c=>{
+      const st=c.status||"En attente", cls=st==="Accepté"?"accepted":st==="Refusé"?"rejected":"pending";
+      return `<tr>
+        <td><div class="candidate">${esc(c.name)}</div><div class="sub"><a class="wa" href="${wa(c.whatsapp)}" target="_blank" rel="noopener">WhatsApp : ${esc(c.whatsapp)}</a></div></td>
+        <td><strong>${esc(c.subject)}</strong><div class="sub">${esc(c.grade)}</div></td>
+        <td>${c.computer?"Ordinateur ✓":"Ordinateur ✗"}<br>${c.wifi?"Wi‑Fi ✓":"Wi‑Fi ✗"}</td>
+        <td>${fmtDate(c.date)}</td>
+        <td><span class="pill ${cls}">${esc(st)}</span></td>
+        <td><div class="row-actions">
+          <button class="btn ghost small" data-view="${esc(c.id)}">Voir</button>
+          ${st!=="Accepté"?`<button class="btn success small" data-status="${esc(c.id)}" data-next="Accepté">Accepter</button>`:""}
+          ${st!=="Refusé"?`<button class="btn danger small" data-status="${esc(c.id)}" data-next="Refusé">Refuser</button>`:""}
+          <button class="btn ghost small" data-del="${esc(c.id)}">Suppr.</button>
+        </div></td>
+      </tr>`;
+    }).join("");
+    body.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openCandidate(b.dataset.view));
+    body.querySelectorAll("[data-status]").forEach(b=>b.onclick=()=>changeStatus(b.dataset.id,b.dataset.next));
+    body.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteCandidate(b.dataset.del));
+  }
+
+  async function changeStatus(cid,next){
+    const c=state.candidates.find(x=>String(x.id)===String(cid)); if(!c) return;
+    if(!confirm(`Confirmer la décision « ${next} » pour ${c.name} ?`)) return;
+    try{ await api("PATCH","candidate",{id:cid,status:next}); toast(`Candidature ${next.toLowerCase()}.`); await loadAdmin(); }
+    catch(e){ toast(`Échec : ${e.message}`); }
+  }
+
+  async function deleteCandidate(cid){
+    const c=state.candidates.find(x=>String(x.id)===String(cid)); if(!c) return;
+    if(!confirm(`Supprimer définitivement la candidature de ${c.name} ?`)) return;
+    try{ await api("DELETE","candidate",{id:cid}); toast("Candidature supprimée."); await loadAdmin(); }
+    catch(e){ toast(`Échec : ${e.message}`); }
+  }
+
+  function openCandidate(cid){
+    const c=state.candidates.find(x=>String(x.id)===String(cid)); if(!c) return;
+    $("#candidateTitle").textContent=c.name||"Candidat";
+    $("#candidateMeta").textContent=`${c.subject||"—"} • ${c.grade||"—"} • ${c.whatsapp||"WhatsApp —"}`;
+    $("#candidateDetail").innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="info"><h3>Statut</h3><p>${esc(c.status||"En attente")}</p></div>
+        <div class="info"><h3>Date</h3><p>${fmtDate(c.date)}</p></div>
+        <div class="info"><h3>Ordinateur</h3><p>${c.computer?"Oui":"Non"}</p></div>
+        <div class="info"><h3>Wi‑Fi</h3><p>${c.wifi?"Oui":"Non"}</p></div>
+      </div>
+      <div class="info" style="margin-top:10px"><h3>Présentation / motivation</h3><p style="white-space:pre-wrap">${esc(c.bio)}</p></div>
+      <div class="modal-actions" style="justify-content:flex-start">
+        <a class="btn success" href="${wa(c.whatsapp)}" target="_blank" rel="noopener">💬 WhatsApp</a>
+        ${(c.status||"En attente")!=="Accepté"?`<button class="btn success" id="modalAccept">Accepter</button>`:""}
+        ${(c.status||"En attente")!=="Refusé"?`<button class="btn danger" id="modalReject">Refuser</button>`:""}
+      </div>`;
+    $("#candidateBackdrop").classList.remove("hidden");
+    $("#modalAccept")?.addEventListener("click",async()=>{await changeStatus(cid,"Accepté");$("#candidateBackdrop").classList.add("hidden")});
+    $("#modalReject")?.addEventListener("click",async()=>{await changeStatus(cid,"Refusé");$("#candidateBackdrop").classList.add("hidden")});
+  }
+
+  function renderOpeningList(){
+    const root=$("#openingList");
+    if(!state.openings.length){root.innerHTML='<div class="empty">Aucun besoin ouvert.</div>';return;}
+    root.innerHTML=state.openings.map(o=>`<div class="opening-admin">
+      <div class="top"><div><div class="name">${esc(o.subject)}</div><div class="meta">${esc(o.grade)}</div></div>
+      <div class="row-actions"><button class="btn secondary small" data-edit-opening="${esc(o.id)}">Modifier</button><button class="btn danger small" data-delete-opening="${esc(o.id)}">Suppr.</button></div></div>
+      <div class="req">${esc(o.requirement||"Profil sérieux, rigoureux et disponible pour les cours en ligne.")}</div>
+    </div>`).join("");
+    root.querySelectorAll("[data-edit-opening]").forEach(b=>b.onclick=()=>editOpening(b.dataset.editOpening));
+    root.querySelectorAll("[data-delete-opening]").forEach(b=>b.onclick=()=>deleteOpening(b.dataset.deleteOpening));
+  }
+
+  function editOpening(oid){
+    const o=state.openings.find(x=>String(x.id)===String(oid)); if(!o)return;
+    $("#openingId").value=o.id; $("#openingSubject").value=o.subject; $("#openingGrade").value=o.grade; $("#openingRequirement").value=o.requirement||"";
+    $("#saveOpening").textContent="Enregistrer la modification"; $("#cancelOpening").classList.remove("hidden"); $("#openingSubject").focus();
+  }
+  function resetOpeningForm(){ $("#openingForm").reset(); $("#openingId").value=""; $("#saveOpening").textContent="Ajouter le besoin"; $("#cancelOpening").classList.add("hidden"); }
+
+  async function saveOpening(ev){
+    ev.preventDefault();
+    const body={id:$("#openingId").value.trim()||id("OPEN"),subject:$("#openingSubject").value.trim(),grade:$("#openingGrade").value.trim(),requirement:$("#openingRequirement").value.trim()||"Profil sérieux, rigoureux et disponible pour les cours en ligne."};
+    if(!body.subject||!body.grade)return;
+    try{
+      await api(body.id && state.openings.some(x=>String(x.id)===String(body.id))?"PATCH":"POST","opening",body);
+      resetOpeningForm(); toast("Recrutement enregistré."); await Promise.all([loadAdmin(),loadPublic()]);
+    }catch(e){toast(`Échec : ${e.message}`)}
+  }
+  async function deleteOpening(oid){
+    const o=state.openings.find(x=>String(x.id)===String(oid)); if(!o)return;
+    if(!confirm(`Supprimer « ${o.subject} — ${o.grade} » ?`))return;
+    try{await api("DELETE","opening",{id:oid});toast("Recrutement supprimé.");await Promise.all([loadAdmin(),loadPublic()])}catch(e){toast(`Échec : ${e.message}`)}
+  }
+
+  function updateNotificationBox(){
+    const box=$("#adminNotificationBox"), unread=state.notifications.filter(n=>!n.read);
+    if(!unread.length){box.classList.add("hidden");return}
+    box.classList.remove("hidden");
+    box.innerHTML=`<span class="unread">🔔 ${unread.length} notification(s) non lue(s).</span> Une ou plusieurs candidatures ont été reçues. <button class="btn secondary small" id="markRead">Tout marquer comme lu</button>`;
+    $("#markRead").onclick=async()=>{try{await api("POST","notifications-read",{});toast("Notifications marquées comme lues.");await loadAdmin()}catch(e){toast(e.message)}};
+  }
+
+  async function notifications(){
+    if(!("Notification" in window)){toast("Les notifications du navigateur ne sont pas disponibles.");return}
+    const p=await Notification.requestPermission();
+    toast(p==="granted"?"Notifications du navigateur activées.":"Notifications non autorisées.");
+  }
+  function notifyBrowser(n){
+    if(document.hidden && "Notification" in window && Notification.permission==="granted"){
+      try{new Notification("SAMA ÉCOLE VIRTUELLE",{body:`${n} nouvelle(s) candidature(s) à étudier.`})}catch{}
+    }
+  }
+  function startPolling(){stopPolling();state.timer=setInterval(()=>loadAdmin(),15000)}
+  function stopPolling(){if(state.timer){clearInterval(state.timer);state.timer=null}}
+
+  $("#applicationForm").addEventListener("submit",submitCandidate);
+  $("#subject").addEventListener("change",updateGrades);
+  $("#refreshPublic").onclick=loadPublic;
+  $("#homeBtn").onclick=e=>{e.preventDefault();if(state.loggedIn)logout();else{history.replaceState({}, "", "#accueil");window.scrollTo({top:0,behavior:"smooth"})}};
+  $("#adminBtn").onclick=showLogin;
+  $("#closeLogin").onclick=closeLogin; $("#loginForm").addEventListener("submit",login);
+  $("#logoutBtn").onclick=logout; $("#adminRefresh").onclick=loadAdmin; $("#notificationBtn").onclick=notifications;
+  $("#search").oninput=renderCandidates; $("#statusFilter").onchange=renderCandidates; $("#subjectFilter").onchange=renderCandidates;
+  $("#resetFilters").onclick=()=>{$("#search").value="";$("#statusFilter").value="";$("#subjectFilter").value="";renderCandidates()};
+  $("#openingForm").addEventListener("submit",saveOpening); $("#cancelOpening").onclick=resetOpeningForm;
+  $("#closeCandidate").onclick=()=>$("#candidateBackdrop").classList.add("hidden");
+  $("#candidateBackdrop").onclick=e=>{if(e.target.id==="candidateBackdrop")$("#candidateBackdrop").classList.add("hidden")};
+  $("#loginBackdrop").onclick=e=>{if(e.target.id==="loginBackdrop")closeLogin()};
+  $("#year").textContent=new Date().getFullYear();
+
+  async function boot(){
+    if(location.hash==="#admin"){
+      showLogin();
+      try{await api("GET","admin-data"); state.loggedIn=true; closeLogin(); $("#publicShell").style.display="none";$("#adminShell").style.display="block";await loadAdmin();startPolling()}catch{}
+    }else{
+      $("#publicShell").style.display="block"; $("#adminShell").style.display="none"; await loadPublic();
+      setInterval(loadPublic,30000);
+    }
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
